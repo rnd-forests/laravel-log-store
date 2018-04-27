@@ -1,0 +1,67 @@
+version: '2'
+
+services:
+  code:
+    container_name: logger_code
+    image: debian
+    volumes:
+      - ./:/var/www/app
+  data:
+    container_name: logger_data
+    image: debian
+    volumes:
+      - .docker/logger_mysql:/var/lib/mysql
+      - .docker/logger_data:/data
+
+  php-fpm:
+    container_name: logger_php-fpm
+    restart: always
+    image: vinhnguyen1512/laravel-php-fpm
+    volumes_from:
+      - code
+    expose:
+      - "9000"
+    links:
+      - workspace
+  nginx:
+    container_name: logger_nginx
+    restart: always
+    image: nginx
+    volumes_from:
+      - data
+      - code
+    volumes:
+      - ./.nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "8000:80"
+    links:
+      - php-fpm
+  mysql:
+    container_name: logger_mysql
+    restart: always
+    image: mysql
+    volumes_from:
+      - data
+    expose:
+      - "3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: "root"
+  mongo:
+    container_name: logger_mongo
+    restart: always
+    image: mongo
+    hostname: mongo
+    volumes:
+        - data
+    expose:
+        - "27017"
+  workspace:
+    container_name: logger_workspace
+    restart: always
+    image: vinhnguyen1512/laravel-workspace
+    volumes_from:
+      - code
+    tty: true
