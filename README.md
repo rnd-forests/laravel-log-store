@@ -1,6 +1,7 @@
 # Laravel - API For Storing Logs
 
-Source code for this Viblo article:
+A simple approach to build API endpoints to store logs from mobile applications. These log instances are typically stored in MongoDB (or any other NoSQL databases of the choice).
+
 ## Installation
 
 We use Docker and Docker Compose for constructing the development environment of the application. Therefore, we first need to install these two softwares:
