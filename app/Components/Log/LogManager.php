@@ -230,7 +230,7 @@ class LogManager
     /**
      * Create new log document from its type.
      *
-     * @return \App\Models\Mongo\Document
+     * @return \App\Document
      */
     protected function newModelInstance()
     {
@@ -256,7 +256,7 @@ class LogManager
      * Attach user to log documents.
      *
      * @param  array $documents
-     * @return array
+     * @return void
      */
     protected function associateWithUser($documents)
     {
@@ -292,6 +292,7 @@ class LogManager
      * Check validity of properties.
      *
      * @return void
+     * @throws LogStoringException
      */
     protected function performGuard()
     {
@@ -300,8 +301,8 @@ class LogManager
     }
 
     /**
-     * @return bool
-     * @throws \App\Exceptions\LogStoringException
+     * @return void
+     * @throws LogStoringException
      */
     protected function ensureValidType()
     {
@@ -311,8 +312,8 @@ class LogManager
     }
 
     /**
-     * @return bool
-     * @throws \App\Exceptions\LogStoringException
+     * @return void
+     * @throws LogStoringException
      */
     protected function ensureValidUser()
     {
